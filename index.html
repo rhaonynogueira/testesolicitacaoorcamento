@@ -1,169 +1,29 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Solicite seu orçamento | Rhaony Nogueira</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; min-height: 100vh; padding: 36px 16px;
-      background: radial-gradient(circle at 15% 0%, #273246 0, transparent 38%), #0c0d10;
-      color: #f4f4f5; font-family: Inter, system-ui, -apple-system, Segoe UI, sans-serif;
-    }
-    .wrap { width: min(100%, 760px); margin: 0 auto; }
-    .top { text-align: center; margin: 0 0 28px; }
-    .eyebrow { color: #d6a65d; text-transform: uppercase; letter-spacing: .2em; font-size: .78rem; font-weight: 700; }
-    h1 { font-size: clamp(2rem, 6vw, 3rem); margin: 12px 0; letter-spacing: -.04em; }
-    .top p { color: #b8bbc3; margin: 0; line-height: 1.6; }
-    form { background: #15171c; border: 1px solid #292d35; border-radius: 22px; padding: clamp(20px, 5vw, 36px); box-shadow: 0 24px 70px #0006; }
-    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-    .full { grid-column: 1 / -1; }
-    label { display: block; margin-bottom: 8px; font-size: .92rem; font-weight: 650; color: #e5e7eb; }
-    input, select, textarea {
-      width: 100%; padding: 13px 14px; border-radius: 11px; border: 1px solid #353a44;
-      background: #0e1014; color: #f4f4f5; font: inherit; outline: none; transition: border .2s, box-shadow .2s;
-    }
-    input:focus, select:focus, textarea:focus { border-color: #d6a65d; box-shadow: 0 0 0 3px #d6a65d22; }
-    input::placeholder, textarea::placeholder { color: #777e8b; }
-    select { cursor: pointer; }
-    textarea { resize: vertical; min-height: 110px; }
-    button {
-      width: 100%; margin-top: 24px; padding: 15px 18px; border: 0; border-radius: 12px;
-      background: #25d366; color: #07130b; font-size: 1rem; font-weight: 800; cursor: pointer;
-      transition: transform .15s, filter .15s;
-    }
-    button:hover { filter: brightness(1.06); transform: translateY(-1px); }
-    button:active { transform: translateY(0); }
-    .foot { text-align: center; font-size: .8rem; color: #8e95a2; margin-top: 18px; }
-    @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } .full { grid-column: auto; } }
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <header class="top">
-      <div class="eyebrow">Rhaony Nogueira • Música ao vivo</div>
-      <h1>Solicite seu orçamento</h1>
-      <p>Conte um pouco sobre seu evento. Vou receber os detalhes diretamente pelo WhatsApp.</p>
-    </header>
-    <form id="budgetForm">
-      <div class="grid">
-        <div class="full">
-          <label for="eventType">Tipo de evento *</label>
-          <select id="eventType" required>
-            <option value="">Selecione o tipo de evento</option>
-            <option>Aniversário</option>
-            <option>Casamento</option>
-            <option>Confraternização</option>
-            <option>Bar / Restaurante / Hotel</option>
-            <option>Outro</option>
-          </select>
-        </div>
-        <div>
-          <label for="name">Nome *</label>
-          <input id="name" autocomplete="name" placeholder="Seu nome completo" required>
-        </div>
-        <div>
-          <label for="phone">Telefone / WhatsApp *</label>
-          <input id="phone" type="tel" autocomplete="tel" placeholder="(00) 00000-0000" required>
-        </div>
-        <div class="full">
-          <label for="date">Data do evento *</label>
-          <input id="date" type="date" required>
-        </div>
-        <div>
-          <label for="startTime">Horário de início *</label>
-          <select id="startTime" required><option value="">Selecione</option></select>
-        </div>
-        <div>
-          <label for="endTime">Horário de término *</label>
-          <select id="endTime" required><option value="">Selecione</option></select>
-        </div>
-        <div class="full">
-          <label for="address">Endereço *</label>
-          <input id="address" placeholder="Rua, número e complemento" required>
-        </div>
-        <div>
-          <label for="neighborhood">Bairro *</label>
-          <input id="neighborhood" placeholder="Bairro" required>
-        </div>
-        <div>
-          <label for="city">Cidade *</label>
-          <input id="city" placeholder="Cidade" required>
-        </div>
-        <div class="full">
-          <label for="guests">Quantidade aproximada de convidados</label>
-          <select id="guests">
-            <option value="">Prefiro não informar</option>
-            <option>Até 30 convidados</option>
-            <option>31 a 50 convidados</option>
-            <option>51 a 100 convidados</option>
-            <option>101 a 150 convidados</option>
-            <option>151 a 200 convidados</option>
-            <option>Mais de 200 convidados</option>
-          </select>
-        </div>
-        <div class="full">
-          <label for="details">Informações adicionais</label>
-          <textarea id="details" placeholder="Conte mais sobre o evento, repertório desejado, estrutura disponível ou outros detalhes..."></textarea>
-        </div>
-      </div>
-      <button type="submit">Enviar solicitação pelo WhatsApp</button>
-      <div class="foot">Seus dados serão usados para responder à sua solicitação de orçamento.</div>
-    </form>
-  </div>
-  <script>
-    const timeSelects = [document.getElementById('startTime'), document.getElementById('endTime')];
-    for (const select of timeSelects) {
-      for (let hour = 0; hour < 24; hour++) {
-        const value = String(hour).padStart(2, '0') + ':00';
-        const option = document.createElement('option');
-        option.value = value;
-        option.textContent = value;
-        select.appendChild(option);
-      }
-    }
-
-    // Define a data mínima como hoje, usando a data local do navegador.
-    const dateInput = document.getElementById('date');
-    const now = new Date();
-    const localDate = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().split('T')[0];
-    dateInput.min = localDate;
-
-    document.getElementById('budgetForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-
-      const start = document.getElementById('startTime').value;
-      const end = document.getElementById('endTime').value;
-      if (end <= start) {
-        alert('O horário de término precisa ser posterior ao horário de início.');
-        return;
-      }
-
-      const rawDate = dateInput.value;
-      const [year, month, day] = rawDate.split('-');
-      const formattedDate = `${day}/${month}/${year}`;
-
-      const message = [
-        '🎸 *SOLICITAÇÃO DE ORÇAMENTO MUSICAL*',
-        '',
-        '*Tipo de evento:* ' + document.getElementById('eventType').value,
-        '*Nome:* ' + document.getElementById('name').value.trim(),
-        '*Telefone:* ' + document.getElementById('phone').value.trim(),
-        '*Data:* ' + formattedDate,
-        '*Início:* ' + start,
-        '*Término:* ' + end,
-        '*Endereço:* ' + document.getElementById('address').value.trim(),
-        '*Bairro:* ' + document.getElementById('neighborhood').value.trim(),
-        '*Cidade:* ' + document.getElementById('city').value.trim(),
-        '*Convidados:* ' + (document.getElementById('guests').value || 'Não informado'),
-        '*Informações adicionais:* ' + (document.getElementById('details').value.trim() || 'Nenhuma')
-      ].join('\n');
-
-      const whatsappNumber = '558589884482';
-      const whatsappURL = 'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent(message);
-      window.open(whatsappURL, '_blank');
-    });
-  </script>
-</body>
-</html>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solicite seu orçamento | Rhaony Nogueira</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--black:#090909;--charcoal:#171717;--paper:#f4f1eb;--muted:#a9a49d;--accent:#c7a36b;--white:#fff;--border:#35312b;--field:#111;}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:44px 18px;background:var(--paper);color:var(--black);font-family:"DM Sans",sans-serif}
+.wrap{width:min(100%,760px);margin:auto}.top{text-align:center;margin:0 0 34px}.eyebrow{color:#987b51;text-transform:uppercase;letter-spacing:.23em;font-size:.68rem;font-weight:700;margin:0 0 16px}
+h1,h2,h3{font-family:"Playfair Display",Georgia,serif;font-weight:600}h1{font-size:clamp(2.8rem,7vw,4.5rem);line-height:1;margin:0 0 18px;letter-spacing:-.04em}.top p{color:#68645e;line-height:1.8;margin:0 auto;max-width:540px}
+form{background:var(--charcoal);color:var(--white);border:1px solid #282522;border-radius:8px;padding:clamp(22px,5vw,40px);box-shadow:0 18px 50px #09090915}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.full{grid-column:1/-1}
+label{display:block;margin-bottom:9px;font-size:.82rem;font-weight:700;letter-spacing:.02em;color:#e6e0d6}input,select,textarea{width:100%;padding:14px 14px;border-radius:4px;border:1px solid #51483b;background:#090909;color:#fff;font:inherit;outline:none;transition:border-color .2s,box-shadow .2s}input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px #c7a36b22}input::placeholder,textarea::placeholder{color:#a9a49d}select{cursor:pointer}textarea{resize:vertical;min-height:115px}input[type=date],select{color-scheme:dark}.hint{font-size:.8rem;color:var(--muted);margin-top:7px}
+button{width:100%;margin-top:26px;padding:16px 20px;border:1px solid var(--accent);border-radius:4px;background:var(--accent);color:#111;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;cursor:pointer;transition:transform .2s,background .2s,color .2s}button:hover{transform:translateY(-2px);background:transparent;color:var(--accent)}.foot{text-align:center;font-size:.75rem;color:var(--muted);margin-top:20px;line-height:1.6}
+@media(max-width:560px){body{padding:28px 14px}.grid{grid-template-columns:1fr}.full{grid-column:auto}}
+</style></head><body><div class="wrap"><header class="top"><p class="eyebrow">Rhaony Nogueira · Música ao vivo</p><h1>Solicite seu <em style="color:var(--accent);font-weight:600">orçamento</em></h1><p>Conte um pouco sobre seu evento. Vou receber os detalhes diretamente pelo WhatsApp.</p></header>
+<form id="budgetForm"><div class="grid">
+<div class="full"><label for="eventType">Tipo de evento *</label><select id="eventType" required><option value="">Selecione o tipo de evento</option><option>Aniversário</option><option>Casamento</option><option>Confraternização</option><option>Bar / Restaurante / Hotel</option><option>Outro</option></select></div>
+<div><label for="name">Nome *</label><input id="name" autocomplete="name" placeholder="Seu nome completo" required></div><div><label for="phone">Telefone / WhatsApp *</label><input id="phone" type="tel" autocomplete="tel" placeholder="(00) 00000-0000" required></div>
+<div class="full"><label for="date">Data do evento *</label><input id="date" type="date" required></div><div><label for="startTime">Horário de início *</label><select id="startTime" required><option value="">Selecione</option></select></div><div><label for="endTime">Horário de término *</label><select id="endTime" required><option value="">Selecione</option></select></div>
+<div class="full"><label for="address">Endereço *</label><input id="address" placeholder="Rua, número e complemento" required></div><div><label for="neighborhood">Bairro *</label><input id="neighborhood" placeholder="Bairro" required></div><div><label for="city">Cidade *</label><input id="city" placeholder="Cidade" required></div>
+<div class="full"><label for="guests">Quantidade aproximada de convidados</label><select id="guests"><option value="">Prefiro não informar</option><option>Até 30 convidados</option><option>31 a 50 convidados</option><option>51 a 100 convidados</option><option>101 a 150 convidados</option><option>151 a 200 convidados</option><option>Mais de 200 convidados</option></select></div>
+<div class="full"><label for="details">Informações adicionais</label><textarea id="details" placeholder="Conte mais sobre o evento, repertório desejado, estrutura disponível ou outros detalhes..."></textarea></div></div><button type="submit">Enviar solicitação pelo WhatsApp</button><div class="foot">Seus dados serão utilizados apenas para responder à solicitação de orçamento.</div></form></div>
+<script>
+const selects=[document.getElementById('startTime'),document.getElementById('endTime')];selects.forEach(s=>{for(let h=0;h<24;h++){let v=String(h).padStart(2,'0')+':00',o=document.createElement('option');o.value=v;o.textContent=v;s.appendChild(o)}});
+const dateInput=document.getElementById('date');let now=new Date(),localDate=new Date(now.getTime()-now.getTimezoneOffset()*60000).toISOString().split('T')[0];dateInput.min=localDate;
+document.getElementById('budgetForm').addEventListener('submit',e=>{e.preventDefault();let start=document.getElementById('startTime').value,end=document.getElementById('endTime').value;if(end<=start){alert('O horário de término precisa ser posterior ao horário de início.');return;}let p=dateInput.value.split('-'),date=`${p[2]}/${p[1]}/${p[0]}`;let msg=['🎸 *SOLICITAÇÃO DE ORÇAMENTO MUSICAL*','', '*Tipo de evento:* '+document.getElementById('eventType').value,'*Nome:* '+document.getElementById('name').value.trim(),'*Telefone:* '+document.getElementById('phone').value.trim(),'*Data:* '+date,'*Início:* '+start,'*Término:* '+end,'*Endereço:* '+document.getElementById('address').value.trim(),'*Bairro:* '+document.getElementById('neighborhood').value.trim(),'*Cidade:* '+document.getElementById('city').value.trim(),'*Convidados:* '+(document.getElementById('guests').value||'Não informado'),'*Informações adicionais:* '+(document.getElementById('details').value.trim()||'Nenhuma')].join('\n');window.open('https://wa.me/558589884482?text='+encodeURIComponent(msg),'_blank');});
+</script></body></html>
